@@ -1,8 +1,15 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/PolymerElements/paper-button)
 
-##&lt;emojione-selector&gt;
+## &lt;emojione-selector&gt;
 
 A polymer element that works best as a emoji picker and is powered by the emojione library
+
+#### Key Features:
+* Supports unicode diversity update
+* Advanced search with multi keyword search
+* Features a real-life demo
+* Mobile first approach to a picker
+* Independent of any containers like a dialog or menu, user is free to use it in a container of their choosing  
 
 Example:
 
