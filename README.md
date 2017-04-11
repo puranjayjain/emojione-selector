@@ -10,20 +10,20 @@ Example:
 ```
 <custom-element-demo>
   <template>
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
-    <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
-    <link rel="import" href="bower_components/iron-icon/iron-icon.html">
-    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
-    <link rel="import" href="bower_components/iron-icons/social-icons.html">
-    <link rel="import" href="bower_components/iron-list/iron-list.html">
-    <link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
-    <link rel="import" href="bower_components/bower_components/paper-styles/color.html">
-    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="bower_components/paper-button/paper-button.html">
-    <link rel="import" href="bower_components/paper-input/paper-input.html">
-    <link rel="import" href="bower_components/paper-item/paper-icon-item.html">
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+    <link rel="import" href="../iron-ajax/iron-ajax.html">
+    <link rel="import" href="../iron-icon/iron-icon.html">
+    <link rel="import" href="../iron-icons/iron-icons.html">
+    <link rel="import" href="../iron-icons/social-icons.html">
+    <link rel="import" href="../iron-list/iron-list.html">
+    <link rel="import" href="../iron-collapse/iron-collapse.html">
+    <link rel="import" href="../bower_components/paper-styles/color.html">
+    <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../paper-button/paper-button.html">
+    <link rel="import" href="../paper-input/paper-input.html">
+    <link rel="import" href="../paper-item/paper-icon-item.html">
 
     <link rel="import" href="emojione-selector.html">
     <template>
