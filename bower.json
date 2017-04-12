@@ -1,5 +1,6 @@
 {
-  "name": "emojione-selector",
+  "name": "emojione-selector-demo",
+  "private": true,
   "homepage": "https://github.com/puranjayjain/emojione-selector",
   "authors": [
     "Puranjay Jain <me+github@puranjayjain.com>"
@@ -41,7 +42,8 @@
     "fuse.js": "krisk/fuse#^2.6.2",
     "lodash": "lodash/lodash#^4.17.4",
     "paper-styles": "PolymerElements/paper-styles#^1.2.1",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.2"
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.3.2",
+    "emojione-selector": "puranjayjain/emojione-selector#^0.1.1"
   },
   "devDependencies": {
     "paper-button": "PolymerElements/paper-button#^1.0.14"
