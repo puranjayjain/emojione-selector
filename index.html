@@ -1,5 +1,4 @@
-<!doctype html>
-<!--
+<!DOCTYPE html><html><head><script src="index.js" defer=""></script><!--
 @license
 Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -8,10 +7,6 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
-<!DOCTYPE html>
-<html>
-  <head>
     <title>emojione-selector demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,43 +20,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
   <body>
     <x-demo></x-demo>
-  </body>
-  <script type="text/javascript">
-    /**
-    * https://aerotwist.com/blog/polymer-for-the-performance-obsessed/
-    * Conditionally loads webcomponents polyfill if needed.
-    * Credit: Glen Maddern (geelen on GitHub)
-    */
-    var webComponentsSupported = ('registerElement' in document && 'import' in document.createElement('link') && 'content' in document.createElement('template'));
-
-    if (!webComponentsSupported) {
-      var wcPoly = document.createElement('script');
-      wcPoly.src = 'bower_components/webcomponentsjs/webcomponents-lite.min.js';
-      wcPoly.onload = lazyLoadPolymerAndElements;
-      document.head.appendChild(wcPoly);
-    } else {
-      lazyLoadPolymerAndElements();
-    }
-
-    function lazyLoadPolymerAndElements() {
-      // Let's use Shadow DOM if we have it, because awesome.
-      window.Polymer = window.Polymer || {};
-      // Setup Polymer options
-      window.Polymer = {
-        dom: 'shadow',
-        lazyRegister: true
-      };
-
-      var elements = ['./x-demo.html'];
-
-      elements.forEach(function (elementURL) {
-
-        var elImport = document.createElement('link');
-        elImport.rel = 'import';
-        elImport.href = elementURL;
-
-        document.head.appendChild(elImport);
-      });
-    }
-  </script>
-</html>
+  
+  </body></html>

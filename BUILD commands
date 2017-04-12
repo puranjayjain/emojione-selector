@@ -1,0 +1,3 @@
+vulcanize demo/index.html --strip-comments --inline-script --inline-css | crisper --html index.html --js index.js
+
+vulcanize demo/x-demo.html --strip-comments --inline-script --inline-css | crisper --html x-demo.html --js x-demo.js
