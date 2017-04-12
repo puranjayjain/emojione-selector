@@ -4,6 +4,10 @@
 
 A polymer element that works best as a emoji picker and is powered by the emojione library
 
+## demo
+
+https://puranjayjain.github.io/emojione-selector/
+
 #### Key Features:
 * Supports unicode diversity update
 * Advanced search with multi keyword search
