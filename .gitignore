@@ -39,7 +39,4 @@ jspm_packages
 # Specifically ignore these bower projects
 bower_components
 bower_components/**/*
-# !bower_components/emojione
 !bower_components/emojione/emoji.json
-# bower_components/emojione/**/*
-# !bower_components/emojione/emoji.json
