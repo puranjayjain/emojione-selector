@@ -22479,7 +22479,8 @@ Polymer({
          * the url for emoji info json
         */
         url: {
-          type: String
+          type: String,
+          value: 'emoji.json'
         },
         /**
          * if the picker is open, useful to control the picker tab
@@ -22639,7 +22640,7 @@ Polymer({
       },
 
       ready: function () {
-        this.url = this.resolveUrl('../emojione/emoji.json');
+        // this.url = this.resolveUrl('emoji.json');
         emojione.ascii = true;
         this.$.clearSearch.style.display = 'none';
       },
