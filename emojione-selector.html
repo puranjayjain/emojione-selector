@@ -28,6 +28,8 @@
 <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
 
+<link rel="import" href="emojione-icons.html">
+
 <!--
 `emojione-selector` works best as a emoji picker and is powered by the emojione library.
 
@@ -215,15 +217,11 @@ to style the tone picker's dialog.
 
     <paper-tabs selected="{{selected}}" noink>
       <paper-tab title="Recently used emoji">
-        <paper-icon-item>
-          <iron-icon icon="favorite" slot="item-icon"></iron-icon>
-          Favorite
-        </paper-icon-item>
-        <!-- <iron-icon icon="emojioneselector:history" slot="item-icon"></iron-icon> -->
+        <iron-icon icon="emojione-icons:history"></iron-icon>
       </paper-tab>
       <template is="dom-repeat" items="[[categories]]" as="category">
         <paper-tab title$="[[category.category_label]]">
-          <iron-icon icon="emojioneselector:{{_getCategoryImg(category.category)}}"></iron-icon>
+          <iron-icon icon="emojione-icons:{{_getCategoryImg(category.category)}}"></iron-icon>
         </paper-tab>
       </template>
     </paper-tabs>
