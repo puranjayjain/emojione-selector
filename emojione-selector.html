@@ -12,14 +12,10 @@
 <link rel="import" href="bower_components/neon-animation/web-animations.html">
 
 <!-- import additional dependencies -->
-<link rel="import" href="bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="bower_components/paper-styles/color.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="bower_components/iron-image/iron-image.html">
-<link rel="import" href="bower_components/iron-list/iron-list.html">
-<link rel="import" href="bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
@@ -27,8 +23,9 @@
 <link rel="import" href="bower_components/paper-material/paper-material.html">
 <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
-<link rel="import" href="emojione-icons.html">
+<link rel="stylesheet" href="font.css">
 
 <!--
 `emojione-selector` works best as a emoji picker and is powered by the emojione library.
@@ -48,9 +45,11 @@ Custom property | Description | Default
 ----------------|-------------|----------
 `--emojione-selector` | Mixin applied to the picker | `{}`
 `--emojione-selector-paper-tabs` | Mixin applied to the paper-tabs | `{}`
+`--emojione-selector-paper-tab` | Mixin applied to the paper-tab | `{}`
 `--emojione-selector-tab-container` | Mixin applied to the container of the search bar and tone picker | `{}`
-`--emojione-selector-iron-list` | Mixin applied to the iron list picker | `{}`
-`--emojione-emoji-container` | Mixin applied to the emoji div of a emoji in list | `{}`
+`--emojione-selector-list` | Mixin applied to the list picker | `{}`
+`--emojione-emoji-container` | Mixin applied to the emoji div of a emoji in the list | `{}`
+`--emojione-selector-title-icon` | Mixin applied to the emoji icon in the tab | `{}`
 
 
 You can also use any of the Polymer.PaperInputContainer styles to style the
@@ -62,7 +61,7 @@ to style the tone picker's dialog.
 -->
 
 <dom-module id="emojione-selector">
-  <template>
+  <template strip-whitespace>
     <custom-style>
       <style>
         * {
@@ -109,14 +108,17 @@ to style the tone picker's dialog.
         iron-selector div.tone5 {
           background-color: #8a6859;
         }
-        iron-list {
+        .emoji-list {
+          @apply --layout-horizontal;
+          @apply --layout-wrap;
           height: 140px;
           overflow-x: hidden !important;
           padding-right: 12px;
           box-sizing: border-box;
-          @apply --emojione-selector-iron-list;
+          @apply --emojione-selector-list;
         }
         .emoji-container {
+          position: relative;
           height: 48px;
           width: 48px;
           padding: 8px;
@@ -130,21 +132,22 @@ to style the tone picker's dialog.
           height: 32px;
           width: 32px;
         }
+        .emoji-container paper-ripple {
+          color: var(--paper-grey-400);
+        }
         paper-tabs {
           background-color: #fff;
           border-top: 2px solid;
           border-bottom: 2px solid;
           border-color: var(--paper-grey-300);
+          --paper-tabs-selection-bar-color: var(--paper-blue-500);
           @apply --emojione-selector-paper-tabs;
         }
         paper-tab {
           --paper-tab: {
             padding: 0;
           }
-        }
-        paper-tab iron-icon {
-          --iron-icon-width: 20px;
-          --iron-icon-height: 20px;
+          @apply --emojione-selector-paper-tab;
         }
         .tab-container {
           @apply --layout-horizontal;
@@ -199,6 +202,52 @@ to style the tone picker's dialog.
         paper-menu-button paper-icon-button {
           color: var(--paper-grey-800);
         }
+        .i {
+          /* use !important to prevent issues with browser extensions that change fonts */
+          font-family: 'emojione' !important;
+          speak: none;
+          font-style: normal;
+          font-weight: normal;
+          font-variant: normal;
+          text-transform: none;
+          line-height: 1;
+          font-size: 20px;
+          color: var(--paper-grey-800);
+          /* Better Font Rendering =========== */
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          @apply --emojione-selector-title-icon;
+        }
+        .i-flag:before {
+          content: "\e153";
+        }
+        .i-font_download:before {
+          content: "\e167";
+        }
+        .i-insert_emoticon:before {
+          content: "\e24e";
+        }
+        .i-nature:before {
+          content: "\e406";
+        }
+        .i-local_attraction:before {
+          content: "\e53f";
+        }
+        .i-local_florist:before {
+          content: "\e545";
+        }
+        .i-build:before {
+          content: "\e869";
+        }
+        .i-extension:before {
+          content: "\e87b";
+        }
+        .i-history:before {
+          content: "\e889";
+        }
+        .i-card_travel:before {
+          content: "\e8f8";
+        }
 
       </style>
     </custom-style>
@@ -215,18 +264,22 @@ to style the tone picker's dialog.
     <!-- get the latest emoji json -->
     <iron-ajax id="emojiAjax" url="{{url}}" handle-as="json" last-response="{{rawemoji}}" on-response="_onEmojiResponse"></iron-ajax>
 
+    <!-- arrow key navigation for emoji list -->
+    <iron-a11y-keys target="[[arrowTarget]]" keys="up right down left" on-keys-press="onArrowEvent"></iron-a11y-keys>
+
     <paper-tabs selected="{{selected}}" noink>
       <paper-tab title="Recently used emoji">
-        <iron-icon icon="emojione-icons:history"></iron-icon>
+        <span class="i i-history"></span>
       </paper-tab>
       <template is="dom-repeat" items="[[categories]]" as="category">
         <paper-tab title$="[[category.category_label]]">
-          <iron-icon icon="emojione-icons:{{_getCategoryImg(category.category)}}"></iron-icon>
+          <span class$="i i-{{_getCategoryImg(category.category)}}"></span>
         </paper-tab>
       </template>
     </paper-tabs>
 
     <div class="tab-container">
+      <!-- skin tone picker -->
       <paper-menu-button dynamic-align vertical-offset="8">
         <div slot="dropdown-trigger" class="dropdown-trigger" title="Skin tone selector">
           <div class$="pickcon [[tone]]"></div>
@@ -234,25 +287,28 @@ to style the tone picker's dialog.
         </div>
         <paper-material elevation="1" slot="dropdown-content">
           <iron-selector attr-for-selected="name" selected="{{tone}}">
-            <div name="tone0"></div>
+            <div name="tone0" tabindex="0"></div>
             <template is="dom-repeat" items="[[modifiers]]" as="modifier">
-              <div name="{{modifier}}" class$="{{modifier}}"></div>
+              <div name="{{modifier}}" class$="{{modifier}}" tabindex="0"></div>
             </template>
           </iron-selector>
         </paper-material>
       </paper-menu-button>
+      <!-- search bar -->
       <!-- <paper-input-autocomplete-chips id="searchField" no-label-float search-if-empty no-chip-image allow-select-unknown-token selected-objects="{{search}}" token-accept-key-codes="32,188" label="Search emoji"></paper-input-autocomplete-chips> -->
       <paper-icon-button id="clearSearch" icon="cancel"></paper-icon-button>
     </div>
 
-    <iron-list id="mainList" items="[[currentList]]" as="emoji" grid>
-      <template>
-        <div class="emoji-container" on-tap="setEmojiTap">
-          <iron-image fade class="[[emoji._class]]" alt="[[emoji.name]]" title="[[emoji.name]]" sizing="contain" src="[[emoji._src]]"></iron-image>
+    <!-- emoji list -->
+
+    <div id="mainList" class="emoji-list">
+      <template is="dom-repeat" items="[[currentList]]" as="emoji" initial-count="33" on-tap="setEmojiTap">
+        <div class="emoji-container" tabindex="0">
+          <iron-image class="{{_getToneProperty(emoji, tone, '_class')}}" alt="{{_getToneProperty(emoji, tone,'name')}}" title="{{_getToneProperty(emoji, tone, 'name')}}" src="{{_getToneProperty(emoji, tone, '_src')}}" sizing="contain"></iron-image>
           <paper-ripple></paper-ripple>
         </div>
       </template>
-    </iron-list>
+    </div>
 
   </template>
   <script src="bower_components/emojione/lib/js/emojione.min.js"></script>
@@ -321,15 +377,15 @@ to style the tone picker's dialog.
           categoryIconMap: {
             type: Object,
             value: {
-              'people': 'mood',
+              'people': 'insert_emoticon',
               'nature': 'nature',
-              'food': 'local-florist',
-              'activity': 'local-activity',
-              'travel': 'card-travel',
+              'food': 'local_florist',
+              'activity': 'local_attraction',
+              'travel': 'card_travel',
               'objects': 'build',
               'symbols': 'extension',
               'flags': 'flag',
-              'regional': 'font-download'
+              'regional': 'font_download'
             }
           },
 
@@ -372,10 +428,6 @@ to style the tone picker's dialog.
             value: ''
           },
 
-          previousTone: {
-            type: String
-          },
-
           /**
            * stores the raw list of emojis from emoji.json from emojione
            */
@@ -403,6 +455,13 @@ to style the tone picker's dialog.
            * fuse js object
            */
           fuse: {
+            type: Object
+          },
+          
+          /**
+           * arrow keys navigation target
+           */
+          arrowTarget: {
             type: Object
           },
 
@@ -473,7 +532,8 @@ to style the tone picker's dialog.
 
       // Observer method name, followed by a list of dependencies, in parenthesis
       static get observers() {
-        return ['onOpenedChange(opened)', 'onSelectedChange(selected)', 'onRecentlyUsedEmojisChange(recentlyUsedEmojis)', 'onSearchChange(search.*)', 'onSkintoneChange(tone)'];
+        return ['onOpenedChange(opened, isRendered)', 'onSelectedChange(selected)'];
+        // 'onSearchChange(search.*)'
       }
 
       /**
@@ -481,7 +541,8 @@ to style the tone picker's dialog.
        */
       ready() {
         super.ready();
-
+        
+        this.arrowTarget = this.$.mainList;
         emojione.ascii = true;
       }
 
@@ -489,9 +550,9 @@ to style the tone picker's dialog.
        * observers
        */
 
-      onOpenedChange(opened) {
+      onOpenedChange(opened, isRendered) {
         // if the picker was opened do it
-        if (opened) {
+        if (opened && isRendered) {
           // if there are recently used emoji select that tab
           if (this.recentlyUsedEmojis.length > 0) {
             this.selected = 0;
@@ -509,43 +570,6 @@ to style the tone picker's dialog.
 
       initSkintone() {
         this.tone = 'tone0';
-      }
-
-      /**
-       * apply diversity on change
-       * @method
-       * @param  {[String]} tone [description]
-       */
-      onSkintoneChange(tone) {
-        let currentEmoji,
-          emoji;
-        // iff a valid tone length
-        if (tone.length > 0 && this.isRendered && this.previousTone !== tone) {
-          for (let category of this.categories) {
-            for (let emojiIndex in this.emojis[category.category]) {
-              currentEmoji = this.get(`emojis.${category.category}.${emojiIndex}`);
-              // only do it for toned elements
-              if (currentEmoji.hasOwnProperty('_diverse')) {
-                // if tone 0 then the rawemoji version else the toned version
-                if (tone === 'tone0') {
-                  emoji = _.cloneDeep(this.get(`rawemoji.${emojiIndex}`));
-                } else {
-                  currentEmoji = this.get(`rawemoji.${emojiIndex}.diversities.${this.modifiers.indexOf(tone)}`);
-                  emoji = _.cloneDeep(this.get(`rawemoji.${currentEmoji}`));
-                }
-                emoji._diverse = true;
-                // clean up the obj and add a new
-                this.splice(`emojis.${category.category}`, emojiIndex, 1, _.cloneDeep(emoji));
-              }
-            }
-          }
-        }
-
-        // HACK to force a re render of iron list
-        this.$.mainList.notifyResize();
-
-        // set prevSelected
-        this.previousTone = tone;
       }
 
       onSearchChange(search) {
@@ -588,13 +612,12 @@ to style the tone picker's dialog.
         }
       }
 
-      onRecentlyUsedEmojisChange(recentlyUsedEmojis) {
-        window.setTimeout(() => {
-          this.currentList = [];
-          if (this.selected === 0) {
-            this.currentList = recentlyUsedEmojis;
-          }
-        });
+      _getToneProperty(emoji, tone, property) {
+        if (tone === 'tone0' || !emoji._diverse) {
+          return emoji[property];
+        } else {
+          return emoji._diversities[tone][property];
+        }
       }
 
       _getCategoryImg(category) {
@@ -637,23 +660,32 @@ to style the tone picker's dialog.
 
       _onEmojiResponse() {
         let emoji,
-          cur,
-          objcopy;
+          i,
+          obj;
+
         // put emoji in category
-        for (let obj in this.rawemoji) {
+        for (obj in this.rawemoji) {
           // add img attributes to the obj
           this.rawemoji[obj] = this._convertImgtoAttributes(this.rawemoji[obj]);
           // for getting diversity
           emoji = this.rawemoji[obj];
+          // no diversity support
+          emoji._diverse = false;
           // if this is a diversity parent push it with diverse set true
           if (emoji.diversities.length > 0) {
+            // add all tones as children
+            emoji._diversities = {};
+            // the emoji has diversity support
             emoji._diverse = true;
+            for (i in emoji.diversities) {
+              emoji._diversities[`tone${parseInt(i) + 1}`] = this.rawemoji[emoji.diversities[i]];
+            }
           }
           // skip other diversity children i.e dont push them
           if (emoji.diversity) {
             continue;
           }
-          // console.log(emoji.category); console.log(this.emojis); create a new category if not in categories
+          // create a new category if not in categories
           if (!this.emojis.hasOwnProperty(emoji.category)) {
             this.push('categories', {
               "order": -1,
@@ -665,34 +697,64 @@ to style the tone picker's dialog.
           // push the item in the array
           this.push(`emojis.${emoji.category}`, emoji);
           // also build the index for searching
-          this.push('searchIndex', emoji);
+          this.push('searchIndex', Object.assign({}, emoji));
         }
-        // TODO sort according to the 'order' register initial tab count
+
+        // go through all categories
+        for (emoji in this.emojis) {
+          this.get(`emojis.${emoji}`).sort((a, b) => {
+            // a is less than b by some ordering criterion
+            if (a.order < b.order) {
+              return -1;
+            }
+
+            // a is greater than b by the ordering criterion
+            if (a.order > b.order) {
+              return 1;
+            }
+
+            // a must be equal to b
+            return 0;
+          });
+        }
+
+        // sort according to the 'order' register initial tab count
         this.initTabs = this.categories.length;
+
         // register fuse js for searching later
         this.fuse = new Fuse(this.searchIndex, this.searchOptions);
+
+        // force the currently selected
+        this.onSelectedChange(this.selected);
+
         this.isRendered = true
-        // force a new skin tone update
-        this.onSkintoneChange(this.tone);
       }
 
       /**
        * tactile event listeners
        */
+      
+      onArrowEvent(event) {
+        console.log(event);
+      }
 
       setEmojiTap(event) {
-        // HACK clear emoji and re emoji
-        this.emoji = '';
-        this.emoji = this._getEmoji(event.model.emoji);
-        // if already in the list remove it
-        for (let i in this.recentlyUsedEmojis) {
-          if (this.recentlyUsedEmojis[i].name === event.model.emoji.name) {
-            this.splice('recentlyUsedEmojis', i, 1);
-            break;
+        // get the model
+        const model = this.$.mainList.modelForElement(event.target);
+        if (model) {
+          // HACK clear emoji and re emoji
+          this.emoji = '';
+          this.emoji = this._getEmoji(model.emoji);
+          // if already in the list remove it
+          for (let i in this.recentlyUsedEmojis) {
+            if (this.recentlyUsedEmojis[i].name === model.emoji.name) {
+              this.splice('recentlyUsedEmojis', i, 1);
+              break;
+            }
           }
+          //  also add it to the recentlyUsedEmojis
+          this.unshift('recentlyUsedEmojis', model.emoji);
         }
-        //  also add it to the recentlyUsedEmojis
-        this.unshift('recentlyUsedEmojis', event.model.emoji);
       }
 
       onClearSearchTap() {
