@@ -24,6 +24,7 @@
 <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 
 <link rel="stylesheet" href="font.css">
 
@@ -265,7 +266,10 @@ to style the tone picker's dialog.
     <iron-ajax id="emojiAjax" url="{{url}}" handle-as="json" last-response="{{rawemoji}}" on-response="_onEmojiResponse"></iron-ajax>
 
     <!-- arrow key navigation for emoji list -->
-    <iron-a11y-keys target="[[arrowTarget]]" keys="up right down left" on-keys-press="onArrowEvent"></iron-a11y-keys>
+    <iron-a11y-keys target="[[arrowTarget]]" keys="up right down left" on-keys-pressed="onArrowEvent"></iron-a11y-keys>
+
+    <!-- enter key select for emoji -->
+    <iron-a11y-keys target="[[arrowTarget]]" keys="enter" on-keys-pressed="setEmojiTap"></iron-a11y-keys>
 
     <paper-tabs selected="{{selected}}" noink>
       <paper-tab title="Recently used emoji">
@@ -281,7 +285,7 @@ to style the tone picker's dialog.
     <div class="tab-container">
       <!-- skin tone picker -->
       <paper-menu-button dynamic-align vertical-offset="8">
-        <div slot="dropdown-trigger" class="dropdown-trigger" title="Skin tone selector">
+        <div slot="dropdown-trigger" class="dropdown-trigger" title="Skin tone selector" tabindex="0">
           <div class$="pickcon [[tone]]"></div>
           <paper-ripple></paper-ripple>
         </div>
@@ -301,8 +305,8 @@ to style the tone picker's dialog.
 
     <!-- emoji list -->
 
-    <div id="mainList" class="emoji-list">
-      <template is="dom-repeat" items="[[currentList]]" as="emoji" initial-count="33" on-tap="setEmojiTap">
+    <div id="emojiList" class="emoji-list" on-tap="setEmojiTap">
+      <template id="mainList" is="dom-repeat" items="[[currentList]]" as="emoji" initial-count="33">
         <div class="emoji-container" tabindex="0">
           <iron-image class="{{_getToneProperty(emoji, tone, '_class')}}" alt="{{_getToneProperty(emoji, tone,'name')}}" title="{{_getToneProperty(emoji, tone, 'name')}}" src="{{_getToneProperty(emoji, tone, '_src')}}" sizing="contain"></iron-image>
           <paper-ripple></paper-ripple>
@@ -315,6 +319,7 @@ to style the tone picker's dialog.
   <script src="fuse.min.js"></script>
   <script src="lodash.custom.min.js"></script>
   <script>
+
     /**
      * `emojione-selector`
      * A polymer element that works best as a emoji picker and is powered by the emojione library
@@ -323,7 +328,8 @@ to style the tone picker's dialog.
      * @polymer
      * @demo demo/index.html
      */
-    class EmojioneSelector extends Polymer.GestureEventListeners(Polymer.Element) {
+
+    class EmojioneSelector extends Polymer.mixinBehaviors([Polymer.IronResizableBehavior], Polymer.GestureEventListeners(Polymer.Element)) {
 
       static get is() {
         return 'emojione-selector';
@@ -452,12 +458,19 @@ to style the tone picker's dialog.
           },
 
           /**
+           * maximum possible number of emoji in a row
+           */
+          emojiInRow: {
+            type: Number
+          },
+
+          /**
            * fuse js object
            */
           fuse: {
             type: Object
           },
-          
+
           /**
            * arrow keys navigation target
            */
@@ -539,11 +552,28 @@ to style the tone picker's dialog.
       /**
        * lifecycle events
        */
+
       ready() {
         super.ready();
-        
-        this.arrowTarget = this.$.mainList;
+
+        // set emojione properties
         emojione.ascii = true;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        this.arrowTarget = this.$.emojiList;
+
+        // add  event listeners here
+        this.addEventListener('iron-resize', this.onResize);
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+
+        // remove  event listeners here
+        this.removeEventListener('iron-resize', this.onResize);
       }
 
       /**
@@ -562,7 +592,9 @@ to style the tone picker's dialog.
         }
       }
 
-      // initiate the local storage for recent emoji and skin tone
+      /**
+       * initiate the local storage for recent emoji and skin tone
+       */
 
       initRecentEmoji() {
         this.recentlyUsedEmojis = [];
@@ -571,6 +603,10 @@ to style the tone picker's dialog.
       initSkintone() {
         this.tone = 'tone0';
       }
+
+      /**
+       * other methods
+       */
 
       onSearchChange(search) {
         // if selected is in regular bounds store it
@@ -727,20 +763,77 @@ to style the tone picker's dialog.
         // force the currently selected
         this.onSelectedChange(this.selected);
 
+        // initiate a resize call to calculate the emoji in a row
+        this.onResize();
+
         this.isRendered = true
       }
 
       /**
        * tactile event listeners
        */
-      
-      onArrowEvent(event) {
-        console.log(event);
+
+      onResize() {
+        this.emojiInRow = Math.floor(this.$.emojiList.clientWidth / 48);
       }
 
+      onArrowEvent(event) {
+        // get next and previous sibling
+        const keyboardEvent = event.detail.keyboardEvent,
+          currentElement = keyboardEvent.target,
+          parentElement = keyboardEvent.target.parentElement,
+          children = parentElement.children,
+          // https://stackoverflow.com/a/23528539
+          position = Array.prototype.indexOf.call(children, currentElement),
+          row = Math.floor(position / this.emojiInRow) + 1,
+          // skip the last element from count
+          count = children.length - 1,
+          nextElement = keyboardEvent.target.nextElementSibling,
+          previousElement = keyboardEvent.target.previousElementSibling,
+          key = keyboardEvent.key || keyboardEvent.code;
+
+        //check what key and act accordingly
+        if (key === 'ArrowLeft') {
+          this._onPreviousElement({
+            previousElement: previousElement,
+            currentElement: currentElement,
+            parentElement: parentElement,
+            position: position,
+            row: row,
+            count: count,
+            children: children
+          });
+        } else if (key === 'ArrowRight') {
+          this._onNextElement();
+        } else if (key === 'ArrowUp') {} else if (key === 'ArrowDown') {}
+      }
+
+      _onPreviousElement(params) {
+        // select previous element or the last element in row
+        if (params.previousElement) {
+          params.previousElement.focus();
+        } else {
+          // get the last element in row
+          const lastElement = (params.row * this.emojiInRow) - 1;
+          // if the last item is more than the count then select the second last element as the last element is not part of the emoji list
+          if (lastElement < params.count) {
+            params.children[lastElement].focus();
+          } else {
+            params.children[params.count - 1].focus();
+          }
+        }
+      }
+
+      _onNextElement(params) {}
+
       setEmojiTap(event) {
-        // get the model
-        const model = this.$.mainList.modelForElement(event.target);
+        let model;
+        // get the model and handle both keyboard and normal event
+        if (event.type === 'tap') {
+          model = this.$.mainList.modelForElement(event.target);
+        } else {
+          model = this.$.mainList.modelForElement(event.detail.keyboardEvent.target);
+        }
         if (model) {
           // HACK clear emoji and re emoji
           this.emoji = '';
