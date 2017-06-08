@@ -41,7 +41,9 @@
     "web-animations-js": "web-animations/web-animations-js#^2.2.5",
     "iron-icon": "PolymerElements/iron-icon#^2.0.0",
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
-    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0"
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
+    "paper-chip": "ThomasCybulski/paper-chip#^2.0.3",
+    "iron-meta": "PolymerElements/iron-meta#^2.0.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
@@ -57,6 +59,7 @@
     "paper-icon-button": "^2.0.0",
     "paper-material": "^2.0.0",
     "paper-styles": "^2.0.0",
-    "paper-ripple": "^2.0.0"
+    "paper-ripple": "^2.0.0",
+    "iron-meta": "^2.0.0"
   }
 }

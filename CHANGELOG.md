@@ -1,6 +1,6 @@
-# v1.0.0
+# v1.0.0 (T.B.A)
 
-* changed the recent emoji logic to only include an array with shortname
+* changed the recent emoji logic to only include an array with `:shortname:`
 
 * added emoji-changed event along with emoji value for event-based applications 
 
@@ -14,14 +14,19 @@
 
 * removes fuse js external dependency instead adds the script since fuse js is no longer on bower :sobs:
 
-* drops lodash dependency
+* dropped lodash dependency
 
-* es6 component
+* converted to es6 component, polyfills maybe required to support older browsers and adapter for es5 converted components see 
+  [https://www.polymer-project.org/2.0/docs/es6](https://www.polymer-project.org/2.0/docs/es6)
 
-* performance improvement using event delegation in emoji list tap event
+* performance improvement using event delegation in emoji list tap even
+
+* dropped `<iron-list>` in favor of `<dom-repeat>`
 
 * changed the recent emoji logic to only include an array with shortname
 
 * added emoji-changed event along with emoji value for event-based applications 
 
 * added arrow key navigation in emoji list
+
+* dropped `<paper-autocomplete-input-chips>` in favor of `<paper-chip>`

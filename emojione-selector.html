@@ -16,17 +16,20 @@
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="bower_components/iron-image/iron-image.html">
+<link rel="import" href="bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="bower_components/paper-material/paper-material.html">
 <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="bower_components/paper-chip/paper-chip-input-autocomplete.html">
+<link rel="import" href="bower_components/paper-chip/paper-chip.html">
 <link rel="import" href="bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 
-<link rel="stylesheet" href="font.css">
+<link rel="import" href="emojione-emoji.html">
+<link rel="import" href="emojione-icons.html">
 
 <!--
 `emojione-selector` works best as a emoji picker and is powered by the emojione library.
@@ -78,7 +81,7 @@ to style the tone picker's dialog.
           background-color: #fff;
         }
         iron-selector {
-          @apply --layout-vertical-reverse;
+          @apply --layout-vertical;
           @apply --layout-justified;
           @apply --layout-center;
         }
@@ -89,6 +92,10 @@ to style the tone picker's dialog.
           width: 20px;
           cursor: pointer;
           margin: 8px;
+          outline: none;
+        }
+        iron-selector div:focus {
+          border: 1px solid var(--paper-blue-500);
         }
         iron-selector div.iron-selected {
           height: 24px;
@@ -118,23 +125,9 @@ to style the tone picker's dialog.
           box-sizing: border-box;
           @apply --emojione-selector-list;
         }
-        .emoji-container {
-          position: relative;
-          height: 48px;
-          width: 48px;
-          padding: 8px;
-          box-sizing: border-box;
-          border-radius: 3px;
-          cursor: pointer;
-          @apply --emojione-emoji-container;
-        }
-        .emoji-container img,
-        .emoji-container iron-image {
+        emojione-emoji iron-image {
           height: 32px;
           width: 32px;
-        }
-        .emoji-container paper-ripple {
-          color: var(--paper-grey-400);
         }
         paper-tabs {
           background-color: #fff;
@@ -150,46 +143,51 @@ to style the tone picker's dialog.
           }
           @apply --emojione-selector-paper-tab;
         }
+        paper-tab iron-icon {
+          --iron-icon-width: 20px;
+          --iron-icon-height: 20px;
+          --iron-icon-fill-color: var(--paper-grey-800);
+        }
         .tab-container {
           @apply --layout-horizontal;
           @apply --layout-center;
           background-color: #fff;
           border-bottom: 2px solid;
           border-color: var(--paper-grey-300);
-          padding: 0 8px;
+          padding-left: 4px;
           @apply --emojione-selector-tab-container;
         }
-        .tab-container .dropdown-trigger {
-          position: relative;
-          border-radius: 50%;
-          height: 40px;
-          width: 40px;
-          padding: 10px;
-          box-sizing: border-box;
-          cursor: pointer;
+        .dropdown-trigger {
+          --emojione-emoji-container: {
+            display: block;
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            padding: 10px;
+          };
         }
-        .tab-container .dropdown-trigger .pickcon {
+        .dropdown-trigger .pickcon {
           background-color: #ffcf11;
           border-radius: 50%;
           height: 20px;
           width: 20px;
         }
-        .tab-container .dropdown-trigger .pickcon.tone1 {
+        .dropdown-trigger .pickcon.tone1 {
           background-color: #ffe1bd;
         }
-        .tab-container .dropdown-trigger .pickcon.tone2 {
+        .dropdown-trigger .pickcon.tone2 {
           background-color: #fed0ac;
         }
-        .tab-container .dropdown-trigger .pickcon.tone3 {
+        .dropdown-trigger .pickcon.tone3 {
           background-color: #d6a57c;
         }
-        .tab-container .dropdown-trigger .pickcon.tone4 {
+        .dropdown-trigger .pickcon.tone4 {
           background-color: #b47d56;
         }
-        .tab-container .dropdown-trigger .pickcon.tone5 {
+        .dropdown-trigger .pickcon.tone5 {
           background-color: #8a6859;
         }
-        paper-input-autocomplete-chips {
+        paper-chip-input {
           @apply --layout-flex;
           margin-right: 12px;
           outline: none;
@@ -202,52 +200,6 @@ to style the tone picker's dialog.
         }
         paper-menu-button paper-icon-button {
           color: var(--paper-grey-800);
-        }
-        .i {
-          /* use !important to prevent issues with browser extensions that change fonts */
-          font-family: 'emojione' !important;
-          speak: none;
-          font-style: normal;
-          font-weight: normal;
-          font-variant: normal;
-          text-transform: none;
-          line-height: 1;
-          font-size: 20px;
-          color: var(--paper-grey-800);
-          /* Better Font Rendering =========== */
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          @apply --emojione-selector-title-icon;
-        }
-        .i-flag:before {
-          content: "\e153";
-        }
-        .i-font_download:before {
-          content: "\e167";
-        }
-        .i-insert_emoticon:before {
-          content: "\e24e";
-        }
-        .i-nature:before {
-          content: "\e406";
-        }
-        .i-local_attraction:before {
-          content: "\e53f";
-        }
-        .i-local_florist:before {
-          content: "\e545";
-        }
-        .i-build:before {
-          content: "\e869";
-        }
-        .i-extension:before {
-          content: "\e87b";
-        }
-        .i-history:before {
-          content: "\e889";
-        }
-        .i-card_travel:before {
-          content: "\e8f8";
         }
 
       </style>
@@ -273,22 +225,22 @@ to style the tone picker's dialog.
 
     <paper-tabs selected="{{selected}}" noink>
       <paper-tab title="Recently used emoji">
-        <span class="i i-history"></span>
+        <iron-icon icon="emojione-icons:history"></iron-icon>
       </paper-tab>
       <template is="dom-repeat" items="[[categories]]" as="category">
         <paper-tab title$="[[category.category_label]]">
-          <span class$="i i-{{_getCategoryImg(category.category)}}"></span>
+          <iron-icon icon="emojione-icons:{{_getCategoryIcon(category.category)}}"></iron-icon>
         </paper-tab>
       </template>
     </paper-tabs>
 
     <div class="tab-container">
+
       <!-- skin tone picker -->
       <paper-menu-button dynamic-align vertical-offset="8">
-        <div slot="dropdown-trigger" class="dropdown-trigger" title="Skin tone selector" tabindex="0">
+        <emojione-emoji slot="dropdown-trigger" class="dropdown-trigger" title="Skin tone selector" tabindex="0">
           <div class$="pickcon [[tone]]"></div>
-          <paper-ripple></paper-ripple>
-        </div>
+        </emojione-emoji>
         <paper-material elevation="1" slot="dropdown-content">
           <iron-selector attr-for-selected="name" selected="{{tone}}">
             <div name="tone0" tabindex="0"></div>
@@ -298,26 +250,28 @@ to style the tone picker's dialog.
           </iron-selector>
         </paper-material>
       </paper-menu-button>
+
       <!-- search bar -->
-      <!-- <paper-input-autocomplete-chips id="searchField" no-label-float search-if-empty no-chip-image allow-select-unknown-token selected-objects="{{search}}" token-accept-key-codes="32,188" label="Search emoji"></paper-input-autocomplete-chips> -->
-      <paper-icon-button id="clearSearch" icon="cancel"></paper-icon-button>
+      <paper-chip-input id="searchField" label="Search emoji" items="{{search}}" closable></paper-chip-input>
+
+      <!-- clear the search -->
+      <paper-icon-button id="clearSearch" on-tap="onClearSearchTap" icon="emojione-icons:cancel"></paper-icon-button>
+
     </div>
 
     <!-- emoji list -->
 
     <div id="emojiList" class="emoji-list" on-tap="setEmojiTap">
-      <template id="mainList" is="dom-repeat" items="[[currentList]]" as="emoji" initial-count="33">
-        <div class="emoji-container" tabindex="0">
+      <template id="mainList" is="dom-repeat" items="[[currentList]]" as="emoji" initial-count="69">
+        <emojione-emoji tabindex="0">
           <iron-image class="{{_getToneProperty(emoji, tone, '_class')}}" alt="{{_getToneProperty(emoji, tone,'name')}}" title="{{_getToneProperty(emoji, tone, 'name')}}" src="{{_getToneProperty(emoji, tone, '_src')}}" sizing="contain"></iron-image>
-          <paper-ripple></paper-ripple>
-        </div>
+        </emojione-emoji>
       </template>
     </div>
 
   </template>
   <script src="bower_components/emojione/lib/js/emojione.min.js"></script>
   <script src="fuse.min.js"></script>
-  <script src="lodash.custom.min.js"></script>
   <script>
 
     /**
@@ -526,6 +480,13 @@ to style the tone picker's dialog.
           },
 
           /**
+           * list of recently used emoji which is rendered
+           */
+          recentlyUsedEmojisRendered: {
+            type: Array
+          },
+
+          /**
            * search results from fuse.js
            */
           searchResults: {
@@ -545,8 +506,7 @@ to style the tone picker's dialog.
 
       // Observer method name, followed by a list of dependencies, in parenthesis
       static get observers() {
-        return ['onOpenedChange(opened, isRendered)', 'onSelectedChange(selected)'];
-        // 'onSearchChange(search.*)'
+        return ['onRecentlyUsedEmojisChange(recentlyUsedEmojis.*)', 'onOpenedChange(opened, isRendered)', 'onSelectedChange(selected)', 'onSearchChange(search.*)'];
       }
 
       /**
@@ -565,6 +525,9 @@ to style the tone picker's dialog.
 
         this.arrowTarget = this.$.emojiList;
 
+        // no floating label for search field
+        this.$.searchField.shadowRoot.querySelector('paper-input').noLabelFloat = true;
+
         // add  event listeners here
         this.addEventListener('iron-resize', this.onResize);
       }
@@ -574,22 +537,6 @@ to style the tone picker's dialog.
 
         // remove  event listeners here
         this.removeEventListener('iron-resize', this.onResize);
-      }
-
-      /**
-       * observers
-       */
-
-      onOpenedChange(opened, isRendered) {
-        // if the picker was opened do it
-        if (opened && isRendered) {
-          // if there are recently used emoji select that tab
-          if (this.recentlyUsedEmojis.length > 0) {
-            this.selected = 0;
-          } else {
-            this.selected = 1;
-          }
-        }
       }
 
       /**
@@ -605,8 +552,30 @@ to style the tone picker's dialog.
       }
 
       /**
-       * other methods
+       * observers
        */
+
+      onRecentlyUsedEmojisChange(recentlyUsedEmojis) {
+        if (recentlyUsedEmojis.base.length > 0) {
+          // parse and add them to recentlyUsedEmojisRendered
+          this.recentlyUsedEmojisRendered = [];
+          for (let emoji of recentlyUsedEmojis.base) {
+            this.push('recentlyUsedEmojisRendered', this._convertImgtoAttributes({shortname: emoji}));
+          }
+        }
+      }
+
+      onOpenedChange(opened, isRendered) {
+        // if the picker was opened do it
+        if (opened && isRendered) {
+          // if there are recently used emoji select that tab
+          if (this.recentlyUsedEmojis.length > 0) {
+            this.selected = 0;
+          } else {
+            this.selected = 1;
+          }
+        }
+      }
 
       onSearchChange(search) {
         // if selected is in regular bounds store it
@@ -626,13 +595,22 @@ to style the tone picker's dialog.
           this.searchResults = [];
           // init search for all keywords
           for (let i in search.base) {
-            this.searchResults = _.concat(this.searchResults, this.fuse.search(search.base[i].text));
+            this.searchResults = [
+              ...this.searchResults,
+              ...this.fuse.search(search.base[i])
+            ];
           }
           // only keep unique
           this.currentList = [];
-          this.currentList = _.uniqBy(this.searchResults);
+          this.currentList = this.deDuplicateByKey(this.searchResults, 'shortname');
           this.selected = -1;
         }
+      }
+
+      // https://stackoverflow.com/a/37022759 keep only unique
+      deDuplicateByKey(array, key) {
+        const temp = array.map(el => el[key]);
+        return array.filter((el, i) => temp.indexOf(el[key]) === i);
       }
 
       onSelectedChange(selected) {
@@ -642,7 +620,7 @@ to style the tone picker's dialog.
         }
         this.currentList = [];
         if (selected === 0) {
-          this.currentList = this.recentlyUsedEmojis;
+          this.currentList = this.recentlyUsedEmojisRendered;
         } else {
           this.currentList = this.get(`emojis.${this.categories[selected - 1].category}`);
         }
@@ -656,7 +634,7 @@ to style the tone picker's dialog.
         }
       }
 
-      _getCategoryImg(category) {
+      _getCategoryIcon(category) {
         return this.get(`categoryIconMap.${category}`);
       }
 
@@ -766,7 +744,7 @@ to style the tone picker's dialog.
         // initiate a resize call to calculate the emoji in a row
         this.onResize();
 
-        this.isRendered = true
+        this.isRendered = true;
       }
 
       /**
@@ -790,21 +768,23 @@ to style the tone picker's dialog.
           count = children.length - 1,
           nextElement = keyboardEvent.target.nextElementSibling,
           previousElement = keyboardEvent.target.previousElementSibling,
+          firstElement = (row - 1) * this.emojiInRow,
+          lastElement = (row * this.emojiInRow) - 1,
           key = keyboardEvent.key || keyboardEvent.code;
 
         //check what key and act accordingly
         if (key === 'ArrowLeft') {
-          this._onPreviousElement({
-            previousElement: previousElement,
-            currentElement: currentElement,
-            parentElement: parentElement,
-            position: position,
+          this._onPreviousElement({previousElement: previousElement, row: row, count: count, children: children, lastElement: lastElement});
+        } else if (key === 'ArrowRight') {
+          this._onNextElement({
+            nextElement: nextElement,
             row: row,
             count: count,
-            children: children
+            position: position,
+            children: children,
+            firstElement: firstElement,
+            lastElement: lastElement
           });
-        } else if (key === 'ArrowRight') {
-          this._onNextElement();
         } else if (key === 'ArrowUp') {} else if (key === 'ArrowDown') {}
       }
 
@@ -813,21 +793,27 @@ to style the tone picker's dialog.
         if (params.previousElement) {
           params.previousElement.focus();
         } else {
-          // get the last element in row
-          const lastElement = (params.row * this.emojiInRow) - 1;
           // if the last item is more than the count then select the second last element as the last element is not part of the emoji list
-          if (lastElement < params.count) {
-            params.children[lastElement].focus();
+          if (params.lastElement < params.count) {
+            params.children[params.lastElement].focus();
           } else {
             params.children[params.count - 1].focus();
           }
         }
       }
 
-      _onNextElement(params) {}
+      _onNextElement(params) {
+        // select previous element or the last element in row and not the last element
+        if (params.nextElement && params.position < params.lastElement && params.position + 1 < params.count) {
+          params.nextElement.focus();
+        } else {
+          params.children[params.firstElement].focus();
+        }
+      }
 
       setEmojiTap(event) {
-        let model;
+        let model,
+          emoji;
         // get the model and handle both keyboard and normal event
         if (event.type === 'tap') {
           model = this.$.mainList.modelForElement(event.target);
@@ -835,18 +821,24 @@ to style the tone picker's dialog.
           model = this.$.mainList.modelForElement(event.detail.keyboardEvent.target);
         }
         if (model) {
-          // HACK clear emoji and re emoji
+          // get the correct shortname
+          if (model.emoji._diverse && this.tone !== 'tone0' && this.selected !== 0) {
+            emoji = model.emoji._diversities[this.tone];
+          } else {
+            emoji = model.emoji;
+          }
+          // HACK clear emoji and re-emoji to make it observable
           this.emoji = '';
-          this.emoji = this._getEmoji(model.emoji);
+          this.emoji = this._getEmoji(emoji);
           // if already in the list remove it
           for (let i in this.recentlyUsedEmojis) {
-            if (this.recentlyUsedEmojis[i].name === model.emoji.name) {
+            if (this.recentlyUsedEmojis[i] === emoji.shortname) {
               this.splice('recentlyUsedEmojis', i, 1);
               break;
             }
           }
           //  also add it to the recentlyUsedEmojis
-          this.unshift('recentlyUsedEmojis', model.emoji);
+          this.unshift('recentlyUsedEmojis', emoji.shortname);
         }
       }
 
