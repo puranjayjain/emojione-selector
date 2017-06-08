@@ -23,7 +23,7 @@
 
 * dropped `<iron-list>` in favor of `<dom-repeat>`
 
-* changed the recent emoji logic to only include an array with shortname
+* changed the recent emoji logic to only include an array with `code_points.base` also the `primary key` in **emoji.json** 
 
 * added emoji-changed event along with emoji value for event-based applications 
 

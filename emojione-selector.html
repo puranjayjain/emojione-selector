@@ -50,6 +50,8 @@ Custom property | Description | Default
 `--emojione-selector` | Mixin applied to the picker | `{}`
 `--emojione-selector-paper-tabs` | Mixin applied to the paper-tabs | `{}`
 `--emojione-selector-paper-tab` | Mixin applied to the paper-tab | `{}`
+`--emojione-selector-paper-tab-icon` | Mixin applied to the icon in paper tab | `{}`
+`--emojione-selector-paper-tab-icon-focused` | Mixin applied to the icon in paper tab when it is focused | `{}`
 `--emojione-selector-tab-container` | Mixin applied to the container of the search bar and tone picker | `{}`
 `--emojione-selector-list` | Mixin applied to the list picker | `{}`
 `--emojione-emoji-container` | Mixin applied to the emoji div of a emoji in the list | `{}`
@@ -147,6 +149,11 @@ to style the tone picker's dialog.
           --iron-icon-width: 20px;
           --iron-icon-height: 20px;
           --iron-icon-fill-color: var(--paper-grey-800);
+          @apply --emojione-selector-paper-tab-icon;
+        }
+        paper-tab[focused] iron-icon {
+          --iron-icon-fill-color: var(--paper-blue-500);
+          @apply --emojione-selector-paper-tab-icon-focused;
         }
         .tab-container {
           @apply --layout-horizontal;
@@ -264,7 +271,12 @@ to style the tone picker's dialog.
     <div id="emojiList" class="emoji-list" on-tap="setEmojiTap">
       <template id="mainList" is="dom-repeat" items="[[currentList]]" as="emoji" initial-count="69">
         <emojione-emoji tabindex="0">
-          <iron-image class="{{_getToneProperty(emoji, tone, '_class')}}" alt="{{_getToneProperty(emoji, tone,'name')}}" title="{{_getToneProperty(emoji, tone, 'name')}}" src="{{_getToneProperty(emoji, tone, '_src')}}" sizing="contain"></iron-image>
+          <iron-image
+            class="{{_getToneProperty(emoji, tone, '_class', selected)}}"
+            alt="{{_getToneProperty(emoji, tone, 'name', selected)}}"
+            title="{{_getToneProperty(emoji, tone, 'name', selected)}}"
+            src="{{_getToneProperty(emoji, tone, '_src', selected)}}"
+            sizing="contain"></iron-image>
         </emojione-emoji>
       </template>
     </div>
@@ -556,11 +568,11 @@ to style the tone picker's dialog.
        */
 
       onRecentlyUsedEmojisChange(recentlyUsedEmojis) {
-        if (recentlyUsedEmojis.base.length > 0) {
+        if (recentlyUsedEmojis.base && recentlyUsedEmojis.base.length > 0) {
           // parse and add them to recentlyUsedEmojisRendered
           this.recentlyUsedEmojisRendered = [];
           for (let emoji of recentlyUsedEmojis.base) {
-            this.push('recentlyUsedEmojisRendered', this._convertImgtoAttributes({shortname: emoji}));
+            this.push('recentlyUsedEmojisRendered', this._convertImgtoAttributes(Object.assign({}, this.rawemoji[emoji])));
           }
         }
       }
@@ -626,8 +638,9 @@ to style the tone picker's dialog.
         }
       }
 
-      _getToneProperty(emoji, tone, property) {
-        if (tone === 'tone0' || !emoji._diverse) {
+      // get property in toned-safe way in case the conditions meet
+      _getToneProperty(emoji, tone, property, selected) {
+        if (tone === 'tone0' || !emoji._diverse || selected === 0) {
           return emoji[property];
         } else {
           return emoji._diversities[tone][property];
@@ -639,7 +652,7 @@ to style the tone picker's dialog.
       }
 
       _getEmoji(emoji) {
-        return emoji.shortname || emoji.char;
+        return emoji.shortname || emoji.code_points.base;
       }
 
       _renderEmoji(emoji) {
@@ -832,13 +845,13 @@ to style the tone picker's dialog.
           this.emoji = this._getEmoji(emoji);
           // if already in the list remove it
           for (let i in this.recentlyUsedEmojis) {
-            if (this.recentlyUsedEmojis[i] === emoji.shortname) {
+            if (this.recentlyUsedEmojis[i] === emoji.code_points.base) {
               this.splice('recentlyUsedEmojis', i, 1);
               break;
             }
           }
           //  also add it to the recentlyUsedEmojis
-          this.unshift('recentlyUsedEmojis', emoji.shortname);
+          this.unshift('recentlyUsedEmojis', emoji.code_points.base);
         }
       }
 

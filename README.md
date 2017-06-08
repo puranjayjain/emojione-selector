@@ -13,6 +13,7 @@ https://puranjayjain.github.io/emojione-selector/
 * Features a real-life demo
 * Mobile first approach to a picker
 * Independent of any containers like a dialog or menu, user is free to use it in a container of their choosing
+* Built with a11y support
 
 ## Install the Polymer-CLI
 
