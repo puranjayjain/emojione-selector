@@ -2,7 +2,7 @@
 
 * changed the recent emoji logic to only include an array with `:shortname:`
 
-* added emoji-changed event along with emoji value for event-based applications 
+* added `emoji-changed` event along with emoji value for event-based applications 
 
 # v2.0.0
 
@@ -25,7 +25,7 @@
 
 * changed the recent emoji logic to only include an array with `code_points.base` also the `primary key` in **emoji.json** 
 
-* added emoji-changed event along with emoji value for event-based applications 
+* added `emoji-changed` event along with emoji value for event-based applications
 
 * added arrow key navigation in emoji list
 
