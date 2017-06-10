@@ -61,3 +61,8 @@ Example:
 ```html
   <emojione-selector opened="true"></emojione-selector>
 ```
+
+## TODO 
+
+- Loads of Tests
+- v1.x with hybrid support
