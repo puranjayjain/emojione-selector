@@ -205,11 +205,9 @@ to style the tone picker's dialog.
         paper-chip-input {
           @apply --layout-flex;
           outline: none;
+          margin-right: 12px;
           --paper-input-container-focus-color: var(--paper-blue-500);
           @apply --emojione-selector-chip;
-        }
-        .clear {
-          margin-left: 12px;
         }
         paper-icon-button {
           color: var(--paper-grey-700);
@@ -285,7 +283,7 @@ to style the tone picker's dialog.
       <paper-chip-input id="searchField" label="Search emoji" items="{{search}}" closable></paper-chip-input>
 
       <!-- clear the search -->
-      <paper-icon-button id="clearSearch" class="clear" on-tap="onClearSearchTap" icon="emojione-icons:cancel"></paper-icon-button>
+      <paper-icon-button id="clearSearch" on-tap="onClearSearchTap" icon="emojione-icons:cancel"></paper-icon-button>
 
     </div>
 
@@ -337,14 +335,14 @@ to style the tone picker's dialog.
           */
           categoryUrl: {
             type: String,
-            value: '../emojione/categories.json'
+            value: this.importPath + '../emojione/categories.json'
           },
           /**
            * the url for emoji info json
           */
           url: {
             type: String,
-            value: '../emojione/emoji.json'
+            value: this.importPath + '../emojione/emoji.json'
           },
           /**
            * if the picker is open, useful to control the picker tab
