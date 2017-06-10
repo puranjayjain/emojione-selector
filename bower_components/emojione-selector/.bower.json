@@ -1,0 +1,77 @@
+{
+  "name": "emojione-selector",
+  "description": "A polymer element that works best as a emoji picker and is powered by the emojione library",
+  "main": "emojione-selector.html",
+  "homepage": "https://github.com/puranjayjain/emojione-selector",
+  "authors": [
+    "Puranjay Jain <me+github@puranjayjain.com>"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "emoji",
+    "picker",
+    "emojione"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "yarn.lock"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-image": "PolymerElements/iron-image#^2.1.1",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.2",
+    "iron-list": "PolymerElements/iron-list#^2.0.0",
+    "iron-localstorage": "PolymerElements/iron-localstorage#^2.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.0",
+    "paper-ripple": "PolymerElements/paper-ripple#^2.0.0",
+    "paper-material": "PolymerElements/paper-material#^2.0.0",
+    "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
+    "iron-selector": "PolymerElements/iron-selector#^2.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "emojione": "ranks/emojione#^3.0.3",
+    "neon-animation": "PolymerElements/neon-animation#^2.0.0",
+    "web-animations-js": "web-animations/web-animations-js#^2.2.5",
+    "iron-icon": "PolymerElements/iron-icon#^2.0.0",
+    "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
+    "paper-chip": "ThomasCybulski/paper-chip#^2.0.3",
+    "iron-meta": "PolymerElements/iron-meta#^2.0.0",
+    "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^2.0.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0",
+    "webcomponentsjs": "^v1.0.0",
+    "lodash": "^4.17.4",
+    "iron-flex-layout": "^2.0.0",
+    "iron-selector": "^2.0.0",
+    "paper-icon-button": "^2.0.0",
+    "paper-material": "^2.0.0",
+    "paper-styles": "^2.0.0",
+    "paper-ripple": "^2.0.0",
+    "iron-meta": "^2.0.0",
+    "iron-a11y-keys-behavior": "^2.0.0"
+  },
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.0",
+    "commit": "60ffb4ebd68c6c5c2349df1cfb274e5342987dc4"
+  },
+  "_source": "https://github.com/puranjayjain/emojione-selector.git",
+  "_target": "^2.0.0",
+  "_originalSource": "puranjayjain/emojione-selector",
+  "_direct": true
+}
