@@ -2,47 +2,41 @@
 
 <dom-module id="emojione-badge">
   <template strip-whitespace>
-    <custom-style>
-      <style>
-        :host {
-          max-height: 48px !important;
-          padding: 8px;
-          border-radius: 4px;
-          background-color: rgba(0, 0, 0, .8);
-          color: #fff;
-          text-align: center;
-          z-index: 1;
-        }
+    <style is="custom-style">
+      :host {
+        max-height: 48px !important;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, .8);
+        color: #fff;
+        text-align: center;
+        z-index: 1;
+      }
 
-      </style>
-    </custom-style>
+    </style>
 
     <slot></slot>
   </template>
   <script>
-    class EmojioneBadge extends Polymer.mixinBehaviors([Polymer.IronFitBehavior], Polymer.Element) {
+    Polymer({
 
-      static get is() {
-        return 'emojione-badge';
-      }
+      is: 'emojione-badge',
 
-      static get observers() {
-        return ['onPositionTargetChange(positionTarget, fitInto)'];
-      }
+      behaviors: [Polymer.IronFitBehavior],
 
-      onPositionTargetChange(positionTarget, fitInto) {
+      observers: ['onPositionTargetChange(positionTarget, fitInto)'],
+
+      onPositionTargetChange: function (positionTarget, fitInto) {
         if (positionTarget && fitInto) {
           this.horizontalAlign = 'right';
           this.horizontalOffset = '15';
           this.verticalAlign = 'bottom';
           this.verticalOffset = '-50';
-          window.setTimeout(() => {
+          this.async(function () {
             this.position();
           });
         }
       }
-    }
-
-    window.customElements.define(EmojioneBadge.is, EmojioneBadge);
+    });
   </script>
 </dom-module>
