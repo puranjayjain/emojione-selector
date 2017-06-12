@@ -1,53 +1,41 @@
-<link rel="import" href="../iron-fit-behavior/iron-fit-behavior.html">
-
 <dom-module id="emojione-badge">
   <template strip-whitespace>
-    <custom-style>
-      <style>
-        :host {
-          position: absolute;
-          pointer-events: none;
-          padding: 8px;
-          border-radius: 4px;
-          background-color: rgba(0, 0, 0, .8);
-          color: #fff;
-          text-align: center;
-          z-index: 1;
-        }
+    <style is="custom-style">
+      :host {
+        position: absolute;
+        pointer-events: none;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, .8);
+        color: #fff;
+        text-align: center;
+        z-index: 1;
+      }
 
-      </style>
-    </custom-style>
+    </style>
 
     <slot></slot>
   </template>
   <script>
-    class EmojioneBadge extends Polymer.Element {
+    Polymer({
 
-      static get is() {
-        return 'emojione-badge';
-      }
+      is: 'emojione-badge',
 
-      static get properties() {
-        return {
-          position: {
-            type: Object
-          }
-        };
-      }
+      properties: {
+        position: {
+          type: Object
+        }
+      },
+      
+      observers: ['onPositionChange(position)'],
 
-      static get observers() {
-        return ['onPositionChange(position)'];
-      }
-
-      onPositionChange(position) {
+      onPositionChange: function (position) {
         if (position) {
           for (var i in position) {
             this.style[i] = position[i] + 'px';
           }
         }
       }
-    }
-
-    window.customElements.define(EmojioneBadge.is, EmojioneBadge);
+    });
   </script>
 </dom-module>
