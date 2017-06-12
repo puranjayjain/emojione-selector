@@ -10,7 +10,8 @@
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
-<link rel="import" href="../paper-chip/paper-chip.html">
+<link rel="import" href="../neon-animation/web-animations.html">
+<link rel="import" href="../paper-input-autocomplete-chips/paper-input-autocomplete-chips.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
@@ -40,7 +41,6 @@ Custom property | Description | Default
 `--emojione-selector-paper-tab` | Mixin applied to the paper-tab | `{}`
 `--emojione-selector-paper-tab-icon` | Mixin applied to the icon in paper tab | `{}`
 `--emojione-selector-paper-tab-icon-focused` | Mixin applied to the icon in paper tab when it is focused | `{}`
-`--emojione-selector-chip` | Mixin applied to the search bar | `{}`
 `--emojione-selector-tab-container` | Mixin applied to the container of the search bar and tone picker | `{}`
 `--emojione-selector-list` | Mixin applied to the list picker | `{}`
 `--emojione-emoji-container` | Mixin applied to the emoji div of a emoji in the list | `{}`
@@ -55,159 +55,157 @@ to style the tone picker's dialog.
 -->
 
 <dom-module id="emojione-selector">
-  <style is="custom-style">
-    * {
-      -webkit-tap-highlight-color: transparent;
-      -moz-tap-highlight-color: transparent;
-      tap-highlight-color: transparent;
-    }
-    :host {
-      @apply --layout-vertical;
-      outline: none;
-      @apply --emojione-selector;
-    }
-    paper-material {
-      background-color: #fff;
-    }
-    iron-selector {
-      @apply --layout-vertical;
-      @apply --layout-justified;
-      @apply --layout-center;
-    }
-    iron-selector emojione-emoji {
-      --emojione-emoji-container: {
-        height: auto;
-        width: auto;
-        border-radius: 0;
-      };
-    }
-    iron-selector emojione-emoji div {
-      background-color: #ffcf11;
-      border-radius: 50%;
-      height: 20px;
-      width: 20px;
-    }
-    iron-selector emojione-emoji.iron-selected div {
-      transform: scale(1.2);
-    }
-    iron-selector emojione-emoji div.tone1 {
-      background-color: #ffe1bd;
-    }
-    iron-selector emojione-emoji div.tone2 {
-      background-color: #fed0ac;
-    }
-    iron-selector emojione-emoji div.tone3 {
-      background-color: #d6a57c;
-    }
-    iron-selector emojione-emoji div.tone4 {
-      background-color: #b47d56;
-    }
-    iron-selector emojione-emoji div.tone5 {
-      background-color: #8a6859;
-    }
-    .emoji-list {
-      @apply --layout-horizontal;
-      @apply --layout-wrap;
-      @apply --layout-start-aligned;
-      height: 150px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      box-sizing: border-box;
-      @apply --emojione-selector-list;
-    }
-    emojione-emoji iron-image {
-      height: 32px;
-      width: 32px;
-    }
-    paper-tabs {
-      background-color: #fff;
-      border-top: 2px solid;
-      border-bottom: 2px solid;
-      border-color: var(--paper-grey-300);
-      --paper-tabs-selection-bar-color: var(--paper-blue-500);
-      @apply --emojione-selector-paper-tabs;
-    }
-    paper-tab {
-      --paper-tab: {
-        padding: 0;
-      }
-      @apply --emojione-selector-paper-tab;
-    }
-    paper-tab iron-icon {
-      --iron-icon-width: 20px;
-      --iron-icon-height: 20px;
-      --iron-icon-fill-color: var(--paper-grey-800);
-      @apply --emojione-selector-paper-tab-icon;
-    }
-    paper-tab[focused] iron-icon {
-      --iron-icon-fill-color: var(--paper-blue-500);
-      @apply --emojione-selector-paper-tab-icon-focused;
-    }
-    emojione-badge {
-      opacity: 0;
-    }
-    emojione-badge.show {
-      opacity: 1;
-    }
-    .tab-container {
-      @apply --layout-horizontal;
-      @apply --layout-center;
-      background-color: #fff;
-      border-bottom: 2px solid;
-      border-color: var(--paper-grey-300);
-      padding-left: 4px;
-      @apply --emojione-selector-tab-container;
-    }
-    .dropdown-trigger {
-      --emojione-emoji-container: {
-        display: block;
-        border-radius: 50%;
-        height: 40px;
-        width: 40px;
-        padding: 10px;
-      };
-    }
-    .dropdown-trigger .pickcon {
-      background-color: #ffcf11;
-      border-radius: 50%;
-      height: 20px;
-      width: 20px;
-    }
-    .dropdown-trigger .pickcon.tone1 {
-      background-color: #ffe1bd;
-    }
-    .dropdown-trigger .pickcon.tone2 {
-      background-color: #fed0ac;
-    }
-    .dropdown-trigger .pickcon.tone3 {
-      background-color: #d6a57c;
-    }
-    .dropdown-trigger .pickcon.tone4 {
-      background-color: #b47d56;
-    }
-    .dropdown-trigger .pickcon.tone5 {
-      background-color: #8a6859;
-    }
-    paper-chip-input {
-      @apply --layout-flex;
-      outline: none;
-      margin-right: 12px;
-      --paper-input-container-focus-color: var(--paper-blue-500);
-      @apply --emojione-selector-chip;
-    }
-    paper-icon-button {
-      color: var(--paper-grey-700);
-    }
-    paper-menu-button {
-      padding: 5px;
-    }
-    paper-menu-button paper-icon-button {
-      color: var(--paper-grey-800);
-    }
-
-  </style>
   <template>
+    <style is="custom-style">
+      * {
+        -webkit-tap-highlight-color: transparent;
+        -moz-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
+      }
+      :host {
+        @apply --layout-vertical;
+        outline: none;
+        position: relative;
+        @apply --emojione-selector;
+      }
+      paper-material {
+        background-color: #fff;
+      }
+      iron-selector {
+        @apply --layout-vertical;
+        @apply --layout-justified;
+        @apply --layout-center;
+      }
+      iron-selector emojione-emoji {
+        --emojione-emoji-container: {
+          height: auto;
+          width: auto;
+          border-radius: 0;
+        };
+      }
+      iron-selector emojione-emoji div {
+        background-color: #ffcf11;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+      }
+      iron-selector emojione-emoji.iron-selected div {
+        transform: scale(1.2);
+      }
+      iron-selector emojione-emoji div.tone1 {
+        background-color: #ffe1bd;
+      }
+      iron-selector emojione-emoji div.tone2 {
+        background-color: #fed0ac;
+      }
+      iron-selector emojione-emoji div.tone3 {
+        background-color: #d6a57c;
+      }
+      iron-selector emojione-emoji div.tone4 {
+        background-color: #b47d56;
+      }
+      iron-selector emojione-emoji div.tone5 {
+        background-color: #8a6859;
+      }
+      .emoji-list {
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+        @apply --layout-start-aligned;
+        height: 150px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-sizing: border-box;
+        @apply --emojione-selector-list;
+      }
+      emojione-emoji iron-image {
+        height: 32px;
+        width: 32px;
+      }
+      paper-tabs {
+        background-color: #fff;
+        border-top: 2px solid;
+        border-bottom: 2px solid;
+        border-color: var(--paper-grey-300);
+        --paper-tabs-selection-bar-color: var(--paper-blue-500);
+        @apply --emojione-selector-paper-tabs;
+      }
+      paper-tab {
+        --paper-tab: {
+          padding: 0;
+        }
+        @apply --emojione-selector-paper-tab;
+      }
+      paper-tab iron-icon {
+        --iron-icon-width: 20px;
+        --iron-icon-height: 20px;
+        --iron-icon-fill-color: var(--paper-grey-800);
+        @apply --emojione-selector-paper-tab-icon;
+      }
+      paper-tab[focused] iron-icon {
+        --iron-icon-fill-color: var(--paper-blue-500);
+        @apply --emojione-selector-paper-tab-icon-focused;
+      }
+      emojione-badge {
+        opacity: 0;
+      }
+      emojione-badge.show {
+        opacity: 1;
+      }
+      .tab-container {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        background-color: #fff;
+        border-bottom: 2px solid;
+        border-color: var(--paper-grey-300);
+        padding-left: 4px;
+        @apply --emojione-selector-tab-container;
+      }
+      .dropdown-trigger {
+        --emojione-emoji-container: {
+          display: block;
+          border-radius: 50%;
+          height: 40px;
+          width: 40px;
+          padding: 10px;
+        };
+      }
+      .dropdown-trigger .pickcon {
+        background-color: #ffcf11;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+      }
+      .dropdown-trigger .pickcon.tone1 {
+        background-color: #ffe1bd;
+      }
+      .dropdown-trigger .pickcon.tone2 {
+        background-color: #fed0ac;
+      }
+      .dropdown-trigger .pickcon.tone3 {
+        background-color: #d6a57c;
+      }
+      .dropdown-trigger .pickcon.tone4 {
+        background-color: #b47d56;
+      }
+      .dropdown-trigger .pickcon.tone5 {
+        background-color: #8a6859;
+      }
+      paper-input-autocomplete-chips {
+        @apply (--layout-flex);
+        margin-right: 12px;
+        outline: none;
+      }
+      paper-icon-button {
+        color: var(--paper-grey-700);
+      }
+      paper-menu-button {
+        padding: 5px;
+      }
+      paper-menu-button paper-icon-button {
+        color: var(--paper-grey-800);
+      }
 
+    </style>
     <!-- storage for the most recent emoji -->
     <iron-localstorage name="recentemoji" value="{{recentlyUsedEmojis}}" on-iron-localstorage-load-empty="initRecentEmoji"></iron-localstorage>
 
@@ -267,7 +265,7 @@ to style the tone picker's dialog.
       </paper-menu-button>
 
       <!-- search bar -->
-      <paper-chip-input id="searchField" label="Search emoji" items="{{search}}" closable></paper-chip-input>
+      <paper-input-autocomplete-chips id="searchField" no-label-float search-if-empty no-chip-image allow-select-unknown-token selected-objects="{{search}}" token-accept-key-codes="32,188" label="Search emoji"></paper-input-autocomplete-chips>
 
       <!-- clear the search -->
       <paper-icon-button id="clearSearch" icon="emojione-icons:cancel"></paper-icon-button>
@@ -310,15 +308,13 @@ to style the tone picker's dialog.
          * the url for category info json
         */
         categoryUrl: {
-          type: String,
-          value: this.importPath + '../emojione/categories.json'
+          type: String
         },
         /**
          * the url for emoji info json
         */
         url: {
-          type: String,
-          value: this.importPath + '../emojione/emoji.json'
+          type: String
         },
         /**
          * if the picker is open, useful to control the picker tab
@@ -561,19 +557,15 @@ to style the tone picker's dialog.
       },
 
       ready: function () {
+        this.categoryUrl = this.importPath + '../emojione/categories.json';
+        this.url = this.importPath + '../emojione/emoji.json';
+
         emojione.ascii = true;
 
         this.$.clearSearch.style.display = 'none';
 
         this.ctrlTarget = this;
         this.arrowTarget = this.$.emojiList;
-
-        // set badges => tabs
-        this.$.badge0.fitInto = this.$.tab0;
-        this.$.badge0.positionTarget = this.$.tab0;
-
-        // no floating label for search field
-        Polymer.dom(this.$.searchField.root).querySelector('paper-input').noLabelFloat = true;
       },
 
       /**
@@ -635,7 +627,7 @@ to style the tone picker's dialog.
           this.searchResults = [];
           // init search for all keywords
           for (var i in search.base) {
-            this.searchResults = _.concat(this.searchResults, this.fuse.search(search.base[i]));
+            this.searchResults = _.concat(this.searchResults, this.fuse.search(search.base[i].text));
           }
 
           // only keep unique
@@ -749,14 +741,16 @@ to style the tone picker's dialog.
           // create a new category if not in categories
           if (!this.emojis.hasOwnProperty(emoji.category)) {
             this.push('categories', {
-              "order": -1,
-              "category": emoji.category,
-              "category_label": emoji.category
+              'order': -1,
+              'category': emoji.category,
+              'category_label': emoji.category
             });
-            this.set('emojis. ' + emoji.category, []);
+            this.set('emojis.' + emoji.category, []);
           }
+
           // push the item in the array
           this.push('emojis.' + emoji.category, emoji);
+
           // also build the index for searching
           this.push('searchIndex', _.cloneDeep(emoji));
         }
@@ -782,15 +776,6 @@ to style the tone picker's dialog.
         // sort according to the 'order' register initial tab count
         this.initTabs = this.categories.length;
 
-        // set badges => tabs
-        this.async(function () {
-          for (i in this.categories) {
-            obj = parseInt(i) + 1;
-            Polymer.dom(this.root).querySelector('#badge' + obj).fitInto = Polymer.dom(this.root).querySelector('#tab' + obj);
-            Polymer.dom(this.root).querySelector('#badge' + obj).positionTarget = Polymer.dom(this.root).querySelector('#tab' + obj);
-          }
-        });
-
         // register fuse js for searching later
         this.fuse = new Fuse(this.searchIndex, this.searchOptions);
 
@@ -808,7 +793,37 @@ to style the tone picker's dialog.
        */
 
       onResize: function () {
-        this.emojiInRow = Math.floor(this.$.emojiList.clientWidth / 48);
+        this.cancelDebouncer('emojioneResizeDebounce');
+
+        this.debounce('emojioneResizeDebounce', function () {
+          var i,
+            j,
+            badge,
+            tab;
+
+          this.emojiInRow = Math.floor(this.$.emojiList.clientWidth / 48);
+
+          // set badges => tabs
+          this.$.badge0.position = {
+            'top': this.$.tab0.offsetTop + this.$.tab0.clientHeight,
+            'left': this.$.tab0.offsetLeft + ((this.$.tab0.clientWidth - this.$.badge0.clientWidth) / 2)
+          };
+
+          if (this.categories) {
+            this.async(function () {
+              for (i in this.categories) {
+                j = parseInt(i) + 1;
+                badge = Polymer.dom(this.root).querySelector('#badge' + j);
+                tab = Polymer.dom(this.root).querySelector('#tab' + j);
+
+                badge.position = {
+                  'top': tab.offsetTop + tab.clientHeight,
+                  'left': tab.offsetLeft + ((tab.clientWidth - badge.clientWidth) / 2)
+                };
+              }
+            });
+          }
+        }, 200);
       },
 
       onCloseCtrlEvent: function (event) {

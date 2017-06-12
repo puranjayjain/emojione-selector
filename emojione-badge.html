@@ -1,10 +1,9 @@
-<link rel="import" href="../iron-fit-behavior/iron-fit-behavior.html">
-
 <dom-module id="emojione-badge">
   <template strip-whitespace>
     <style is="custom-style">
       :host {
-        max-height: 48px !important;
+        position: absolute;
+        pointer-events: none;
         padding: 8px;
         border-radius: 4px;
         background-color: rgba(0, 0, 0, .8);
@@ -22,19 +21,19 @@
 
       is: 'emojione-badge',
 
-      behaviors: [Polymer.IronFitBehavior],
+      properties: {
+        position: {
+          type: Object
+        }
+      },
+      
+      observers: ['onPositionChange(position)'],
 
-      observers: ['onPositionTargetChange(positionTarget, fitInto)'],
-
-      onPositionTargetChange: function (positionTarget, fitInto) {
-        if (positionTarget && fitInto) {
-          this.horizontalAlign = 'right';
-          this.horizontalOffset = '15';
-          this.verticalAlign = 'bottom';
-          this.verticalOffset = '-50';
-          this.async(function () {
-            this.position();
-          });
+      onPositionChange: function (position) {
+        if (position) {
+          for (var i in position) {
+            this.style[i] = position[i] + 'px';
+          }
         }
       }
     });
