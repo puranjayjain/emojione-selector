@@ -21,8 +21,7 @@
     "tests",
     "yarn.lock"
   ],
-  "dependencies":
-  {
+  "dependencies": {
     "emojione": "ranks/emojione#^3.0.3",
     "polymer": "Polymer/polymer#^1.9.1 || ^2.0.0",
     "iron-image": "PolymerElements/iron-image#^2.1.1",
@@ -42,15 +41,13 @@
     "iron-icon": "PolymerElements/iron-icon#^2.0.0",
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
-    "paper-chip": "ThomasCybulski/paper-chip#^2.0.3",
+    "paper-chip": "ThomasCybulski/paper-chip#^1.1.1",
     "iron-meta": "PolymerElements/iron-meta#^2.0.0",
     "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^2.0.0",
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^2.0.0",
-    "paper-input-autocomplete-chips": "WebPaperElements/paper-input-autocomplete-chips#^0.30.4",
     "lodash": "lodash/lodash#^4.17.4"
   },
-  "devDependencies":
-  {
+  "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"

@@ -10,7 +10,7 @@
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
-<link rel="import" href="../paper-input-autocomplete-chips/paper-input-autocomplete-chips.html">
+<link rel="import" href="../paper-chip/paper-chip.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
@@ -40,6 +40,7 @@ Custom property | Description | Default
 `--emojione-selector-paper-tab` | Mixin applied to the paper-tab | `{}`
 `--emojione-selector-paper-tab-icon` | Mixin applied to the icon in paper tab | `{}`
 `--emojione-selector-paper-tab-icon-focused` | Mixin applied to the icon in paper tab when it is focused | `{}`
+`--emojione-selector-chip` | Mixin applied to the search bar | `{}`
 `--emojione-selector-tab-container` | Mixin applied to the container of the search bar and tone picker | `{}`
 `--emojione-selector-list` | Mixin applied to the list picker | `{}`
 `--emojione-emoji-container` | Mixin applied to the emoji div of a emoji in the list | `{}`
@@ -187,10 +188,12 @@ to style the tone picker's dialog.
     .dropdown-trigger .pickcon.tone5 {
       background-color: #8a6859;
     }
-    paper-input-autocomplete-chips {
-      @apply (--layout-flex);
-      margin-right: 12px;
+    paper-chip-input {
+      @apply --layout-flex;
       outline: none;
+      margin-right: 12px;
+      --paper-input-container-focus-color: var(--paper-blue-500);
+      @apply --emojione-selector-chip;
     }
     paper-icon-button {
       color: var(--paper-grey-700);
@@ -264,7 +267,7 @@ to style the tone picker's dialog.
       </paper-menu-button>
 
       <!-- search bar -->
-      <paper-input-autocomplete-chips id="searchField" no-label-float search-if-empty no-chip-image allow-select-unknown-token selected-objects="{{search}}" token-accept-key-codes="32,188" label="Search emoji"></paper-input-autocomplete-chips>
+      <paper-chip-input id="searchField" label="Search emoji" items="{{search}}" closable></paper-chip-input>
 
       <!-- clear the search -->
       <paper-icon-button id="clearSearch" icon="emojione-icons:cancel"></paper-icon-button>
