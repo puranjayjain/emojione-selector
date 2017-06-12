@@ -30,3 +30,7 @@
 * added arrow key navigation in emoji list
 
 * dropped `<paper-autocomplete-input-chips>` in favor of `<paper-chip>`
+
+# v2.0.1
+
+* Minor bug fixes
