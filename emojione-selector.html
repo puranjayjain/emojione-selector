@@ -23,7 +23,7 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../paper-chip/paper-chip.html">
+<link rel="import" href="../paper-chip/paper-chip-input-autocomplete.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
@@ -80,6 +80,7 @@ to style the tone picker's dialog.
         :host {
           @apply --layout-vertical;
           outline: none;
+          position: relative;
           @apply --emojione-selector;
         }
         paper-material {
@@ -654,6 +655,10 @@ to style the tone picker's dialog.
           } else {
             this.selected = 1;
           }
+          // focus the selected tab
+          window.setTimeout(() => {
+            this.shadowRoot.querySelector('#tab' + this.selected).focus();
+          }, 200);
           this.setAttribute('tabindex', '0');
         } else {
           this.setAttribute('tabindex', '-1');
@@ -870,8 +875,8 @@ to style the tone picker's dialog.
             window.setTimeout(() => {
               for (i in this.categories) {
                 j = parseInt(i) + 1;
-                badge = Polymer.dom(this.root).querySelector(`#badge${j}`);
-                tab = Polymer.dom(this.root).querySelector(`#tab${j}`);
+                badge = this.shadowRoot.querySelector(`#badge${j}`);
+                tab = this.shadowRoot.querySelector(`#tab${j}`);
 
                 badge.position = {
                   'top': tab.offsetTop + tab.clientHeight,
