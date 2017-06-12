@@ -603,6 +603,10 @@ to style the tone picker's dialog.
           } else {
             this.selected = 1;
           }
+          // focus the selected tab
+          this.async(function () {
+            this.$$('#tab' + this.selected).focus();
+          }, 200);
           this.setAttribute('tabindex', '0');
         } else {
           this.setAttribute('tabindex', '-1');
