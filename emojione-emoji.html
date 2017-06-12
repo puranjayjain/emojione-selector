@@ -2,43 +2,47 @@
 
 <dom-module id="emojione-emoji">
   <template strip-whitespace>
-    <style is="custom-style">
-      :host {
-        position: relative;
-        outline: none;
-        height: 48px;
-        width: 48px;
-        padding: 8px;
-        box-sizing: border-box;
-        border-radius: 3px;
-        cursor: pointer;
-        @apply --emojione-emoji-container;
-      }
-      paper-ripple {
-        color: var(--paper-grey-400);
-        @apply --emojione-emoji-ripple;
-      }
+    <custom-style>
+      <style>
+        :host {
+          position: relative;
+          outline: none;
+          height: 48px;
+          width: 48px;
+          padding: 8px;
+          box-sizing: border-box;
+          border-radius: 3px;
+          cursor: pointer;
+          @apply --emojione-emoji-container;
+        }
+        paper-ripple {
+          color: var(--paper-grey-400);
+          @apply --emojione-emoji-ripple;
+        }
 
-    </style>
+      </style>
+    </custom-style>
 
     <slot></slot>
   </template>
   <script>
-    Polymer({
+    class EmojioneEmoji extends Polymer.mixinBehaviors([Polymer.PaperInkyFocusBehavior], Polymer.Element) {
 
-      is: 'emojione-emoji',
-
-      behaviors: [Polymer.PaperInkyFocusBehavior],
+      static get is() {
+        return 'emojione-emoji';
+      }
 
       /**
        * @override the createRipple function in paper ripple
        * https://github.com/PolymerElements/paper-behaviors/blob/master/paper-inky-focus-behavior.html
        */
-      _createRipple: function () {
+      _createRipple() {
         const ripple = Polymer.PaperRippleBehavior._createRipple();
         ripple.id = 'ink';
         return ripple;
       }
-    });
+    }
+
+    window.customElements.define(EmojioneEmoji.is, EmojioneEmoji);
   </script>
 </dom-module>
