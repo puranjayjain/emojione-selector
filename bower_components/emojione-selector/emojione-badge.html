@@ -5,7 +5,8 @@
     <custom-style>
       <style>
         :host {
-          max-height: 48px !important;
+          position: absolute;
+          pointer-events: none;
           padding: 8px;
           border-radius: 4px;
           background-color: rgba(0, 0, 0, .8);
@@ -20,25 +21,29 @@
     <slot></slot>
   </template>
   <script>
-    class EmojioneBadge extends Polymer.mixinBehaviors([Polymer.IronFitBehavior], Polymer.Element) {
+    class EmojioneBadge extends Polymer.Element {
 
       static get is() {
         return 'emojione-badge';
       }
 
-      static get observers() {
-        return ['onPositionTargetChange(positionTarget, fitInto)'];
+      static get properties() {
+        return {
+          position: {
+            type: Object
+          }
+        };
       }
 
-      onPositionTargetChange(positionTarget, fitInto) {
-        if (positionTarget && fitInto) {
-          this.horizontalAlign = 'right';
-          this.horizontalOffset = '15';
-          this.verticalAlign = 'bottom';
-          this.verticalOffset = '-50';
-          window.setTimeout(() => {
-            this.position();
-          });
+      static get observers() {
+        return ['onPositionChange(position)'];
+      }
+
+      onPositionChange(position) {
+        if (position) {
+          for (var i in position) {
+            this.style[i] = position[i] + 'px';
+          }
         }
       }
     }

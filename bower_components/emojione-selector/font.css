@@ -1,9 +1,0 @@
-@font-face {
-  font-family: 'emojione';
-  src:
-    url('fonts/emojione.ttf?gbbz54') format('truetype'),
-    url('fonts/emojione.woff?gbbz54') format('woff'),
-    url('fonts/emojione.svg?gbbz54#emojione') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}

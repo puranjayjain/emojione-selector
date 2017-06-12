@@ -43,7 +43,8 @@
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
     "paper-chip": "ThomasCybulski/paper-chip#^2.0.3",
     "iron-meta": "PolymerElements/iron-meta#^2.0.0",
-    "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^2.0.0"
+    "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^2.0.0",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^2.0.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
@@ -63,15 +64,15 @@
     "iron-meta": "^2.0.0",
     "iron-a11y-keys-behavior": "^2.0.0"
   },
-  "version": "2.0.0",
-  "_release": "2.0.0",
+  "version": "2.0.1",
+  "_release": "2.0.1",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.0",
-    "commit": "60ffb4ebd68c6c5c2349df1cfb274e5342987dc4"
+    "tag": "v2.0.1",
+    "commit": "31d3f340ff449286970f14a2e84011d6e02d7998"
   },
   "_source": "https://github.com/puranjayjain/emojione-selector.git",
-  "_target": "^2.0.0",
+  "_target": "^2.0.1",
   "_originalSource": "puranjayjain/emojione-selector",
   "_direct": true
 }
