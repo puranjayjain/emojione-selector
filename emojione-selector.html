@@ -6,6 +6,9 @@
 <!-- gesture event support -->
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 
+<!-- debounce polymer -->
+<link rel="import" href="/bower_components/polymer/lib/utils/debounce.html">
+
 <!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
 <link rel="import" href="../neon-animation/web-animations.html">
 
@@ -251,7 +254,7 @@ to style the tone picker's dialog.
         </paper-tab>
       </template>
     </paper-tabs>
-    
+
     <!-- position relative to but outside helper badges -->
     <emojione-badge id="badge0" class$="[[_getClass(hasCtrl)]]">0</emojione-badge>
     <template is="dom-repeat" items="[[categories]]" as="category">
@@ -334,15 +337,13 @@ to style the tone picker's dialog.
            * the url for category info json
           */
           categoryUrl: {
-            type: String,
-            value: this.importPath + '../emojione/categories.json'
+            type: String
           },
           /**
            * the url for emoji info json
           */
           url: {
-            type: String,
-            value: this.importPath + '../emojione/emoji.json'
+            type: String
           },
           /**
            * if the picker is open, useful to control the picker tab
@@ -567,6 +568,10 @@ to style the tone picker's dialog.
           extractAttributes: {
             type: Array,
             value: ['class', 'src']
+          },
+
+          _debouncer: {
+            type: Object
           }
         };
       }
@@ -583,6 +588,9 @@ to style the tone picker's dialog.
       ready() {
         super.ready();
 
+        this.categoryUrl = this.importPath + '../emojione/categories.json';
+        this.url = this.importPath + '../emojione/emoji.json';
+
         // set emojione properties
         emojione.ascii = true;
       }
@@ -592,9 +600,6 @@ to style the tone picker's dialog.
 
         this.ctrlTarget = this;
         this.arrowTarget = this.$.emojiList;
-        // set badges => tabs
-        this.$.badge0.fitInto = this.$.tab0;
-        this.$.badge0.positionTarget = this.$.tab0;
 
         // no floating label for search field
         this.$.searchField.shadowRoot.querySelector('paper-input').noLabelFloat = true;
@@ -793,14 +798,16 @@ to style the tone picker's dialog.
           // create a new category if not in categories
           if (!this.emojis.hasOwnProperty(emoji.category)) {
             this.push('categories', {
-              "order": -1,
-              "category": emoji.category,
-              "category_label": emoji.category
+              'order': -1,
+              'category': emoji.category,
+              'category_label': emoji.category
             });
             this.set(`emojis.${emoji.category}`, []);
           }
+
           // push the item in the array
           this.push(`emojis.${emoji.category}`, emoji);
+
           // also build the index for searching
           this.push('searchIndex', Object.assign({}, emoji));
         }
@@ -826,15 +833,6 @@ to style the tone picker's dialog.
         // sort according to the 'order' register initial tab count
         this.initTabs = this.categories.length;
 
-        // set badges => tabs
-        window.setTimeout(() => {
-          for (i in this.categories) {
-            obj = parseInt(i) + 1;
-            this.shadowRoot.querySelector(`#badge${obj}`).fitInto = this.shadowRoot.querySelector(`#tab${obj}`);
-            this.shadowRoot.querySelector(`#badge${obj}`).positionTarget = this.shadowRoot.querySelector(`#tab${obj}`);
-          }
-        });
-
         // register fuse js for searching later
         this.fuse = new Fuse(this.searchIndex, this.searchOptions);
 
@@ -853,6 +851,36 @@ to style the tone picker's dialog.
 
       onResize() {
         this.emojiInRow = Math.floor(this.$.emojiList.clientWidth / 48);
+
+        this._debouncer = Polymer.Debouncer.debounce(this._debouncer, Polymer.Async.timeOut.after(200), () => {
+          var i,
+            j,
+            badge,
+            tab;
+
+          this.emojiInRow = Math.floor(this.$.emojiList.clientWidth / 48);
+
+          // set badges => tabs
+          this.$.badge0.position = {
+            'top': this.$.tab0.offsetTop + this.$.tab0.clientHeight,
+            'left': this.$.tab0.offsetLeft + ((this.$.tab0.clientWidth - this.$.badge0.clientWidth) / 2)
+          };
+
+          if (this.categories) {
+            window.setTimeout(() => {
+              for (i in this.categories) {
+                j = parseInt(i) + 1;
+                badge = Polymer.dom(this.root).querySelector(`#badge${j}`);
+                tab = Polymer.dom(this.root).querySelector(`#tab${j}`);
+
+                badge.position = {
+                  'top': tab.offsetTop + tab.clientHeight,
+                  'left': tab.offsetLeft + ((tab.clientWidth - badge.clientWidth) / 2)
+                };
+              }
+            });
+          }
+        });
       }
 
       onCloseCtrlEvent(event) {
