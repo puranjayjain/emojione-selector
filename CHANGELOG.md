@@ -1,8 +1,14 @@
-# v1.0.0 (T.B.A)
+# v1.0.0
 
 * changed the recent emoji logic to only include an array with `:shortname:`
 
 * added `emoji-changed` event along with emoji value for event-based applications 
+
+# v1.0.1
+
+- Fixed merging issues
+- 
+- fixed hybrid `<paper-chip>`
 
 # v2.0.0
 
