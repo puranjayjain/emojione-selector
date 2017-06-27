@@ -44,8 +44,7 @@
     "iron-meta": "PolymerElements/iron-meta#^2.0.0",
     "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^2.0.0",
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^2.0.0",
-    "lodash": "lodash/lodash#^4.17.4",
-    "paper-input-autocomplete-chips": "WebPaperElements/paper-input-autocomplete-chips#^0.30.4"
+    "lodash": "lodash/lodash#^4.17.4"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

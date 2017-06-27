@@ -1,0 +1,113 @@
+<link rel="import" href="../paper-input/paper-input.html">
+
+<link rel="import" href="emojione-chip.html">
+
+<!--
+
+Material design: [Chips](https://material.io/guidelines/components/chips.html)
+
+`emojione-chip-input`
+Paper-chip's represent complex entities in small blocks, such as a contact.
+
+@element paper-chip-input
+@demo demo/index.html
+-->
+
+<dom-module id="emojione-chip-input">
+  <template>
+    <style></style>
+
+    <paper-input value="{{_value}}" label="[[label]]" on-keydown="_keydown" no-label-float="[[noLabelFloat]]">
+      <slot id="slot" name="input" slot="prefix"></slot>
+      <div id="slot2" name="input2" slot="prefix">
+        <template is="dom-repeat" items="[[items]]" as="item">
+          [[item.name]]
+          <emojione-chip id="paper-chip-[[item]]-[[index]]" label="[[item]]" closable$="[[closable]]" on-chip-removed="_removeChip"></emojione-chip>
+        </template>
+      </div>
+    </paper-input>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'emojione-chip-input',
+
+      properties: {
+        noLabelFloat: {
+          type: Boolean
+        },
+        items: {
+          type: Array,
+          value: []
+        },
+        closable: {
+          type: Boolean,
+          value: false
+        },
+        label: {
+          type: String,
+          value: ''
+        },
+        _value: {
+          type: String
+        }
+      },
+
+      _keydown: function (event) {
+        var keyCode_backspace = '8';
+        var keyCode_enter = '13';
+        if (event.keyCode == keyCode_backspace && this.items.length != 0 && (this._value == '' || this._value == undefined)) {
+          this._removeLastItem();
+        } else if (event.keyCode == keyCode_backspace && Polymer.dom(this.$.slot).getEffectiveChildNodes().length > 0 && (this._value == '' || this._value == undefined)) {
+          var distributedNodes = Polymer.dom(this.$.slot).getDistributedNodes()
+          var lastPaperChipIndex = _getLastPaperChipPosition(Polymer.dom(this).childNodes);
+          this._throwChipRemovedEvent(Polymer.dom(this).childNodes[lastPaperChipIndex].label);
+          Polymer.dom(this).removeChild(Polymer.dom(this).childNodes[lastPaperChipIndex]);
+        }
+
+        if (event.keyCode == keyCode_enter && this._value != '' && this._value != undefined) {
+          this._saveTag(this._value);
+          this._value = '';
+        }
+
+        Polymer.dom.flush();
+      },
+
+      _saveTag: function (name) {
+        if (this.items.indexOf(name) == -1) {
+          this.push('items', name);
+        }
+      },
+
+      _removeChip: function (event) {
+        var index = this.items.indexOf(event.detail.chipLabel);
+        if (index != -1) {
+          this.splice('items', index, 1);
+        }
+      },
+
+      _removeLastItem: function () {
+        if (this.items.length != 0) {
+          this._throwChipRemovedEvent(this.items[this.items.length - 1]);
+          this.splice('items', -1, 1);
+        }
+      },
+
+      _getLastPaperChipPosition: function (childNodes) {
+        var lastPaperChipIndex = 0;
+        for (var i = 0; i < childNodes.length; i++) {
+          if (childNodes[i].tagName == 'EMOJIONE-CHIP') {
+            lastPaperChipIndex = i;
+          }
+        }
+        return lastPaperChipIndex;
+      },
+
+      _throwChipRemovedEvent: function (chipLabel) {
+        this.fire('chip-removed', {'chipLabel': chipLabel});
+      }
+    });
+  </script>
+</dom-module>
