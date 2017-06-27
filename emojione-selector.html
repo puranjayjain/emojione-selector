@@ -25,13 +25,15 @@
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../paper-chip/paper-chip-input-autocomplete.html">
 <link rel="import" href="../iron-selector/iron-selector.html">
+<link rel="import" href="../neon-animation/web-animations.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 
+<link rel="import" href="emojione-icons.html">
 <link rel="import" href="emojione-badge.html">
 <link rel="import" href="emojione-emoji.html">
-<link rel="import" href="emojione-icons.html">
+<link rel="import" href="emojione-chip-input.html">
 
 <!--
 `emojione-selector` works best as a emoji picker and is powered by the emojione library.
@@ -101,126 +103,48 @@ to style the tone picker's dialog.
         iron-selector emojione-emoji div {
           background-color: #ffcf11;
           border-radius: 50%;
-          height: 20px;
-          width: 20px;
-        }
-        iron-selector emojione-emoji.iron-selected div {
-          transform: scale(1.2);
-        }
-        iron-selector emojione-emoji div.tone1 {
-          background-color: #ffe1bd;
-        }
-        iron-selector emojione-emoji div.tone2 {
-          background-color: #fed0ac;
-        }
-        iron-selector emojione-emoji div.tone3 {
-          background-color: #d6a57c;
-        }
-        iron-selector emojione-emoji div.tone4 {
-          background-color: #b47d56;
-        }
-        iron-selector emojione-emoji div.tone5 {
-          background-color: #8a6859;
-        }
-        .emoji-list {
-          @apply --layout-horizontal;
-          @apply --layout-wrap;
-          @apply --layout-start-aligned;
-          height: 150px;
-          overflow-x: hidden;
-          overflow-y: auto;
-          box-sizing: border-box;
-          @apply --emojione-selector-list;
-        }
-        emojione-emoji iron-image {
-          height: 32px;
-          width: 32px;
-        }
-        paper-tabs {
-          background-color: #fff;
-          border-top: 2px solid;
-          border-bottom: 2px solid;
-          border-color: var(--paper-grey-300);
-          --paper-tabs-selection-bar-color: var(--paper-blue-500);
-          @apply --emojione-selector-paper-tabs;
-        }
-        paper-tab {
-          --paper-tab: {
-            padding: 0;
-          }
-          @apply --emojione-selector-paper-tab;
-        }
-        paper-tab iron-icon {
-          --iron-icon-width: 20px;
-          --iron-icon-height: 20px;
-          --iron-icon-fill-color: var(--paper-grey-800);
-          @apply --emojione-selector-paper-tab-icon;
-        }
-        paper-tab[focused] iron-icon {
-          --iron-icon-fill-color: var(--paper-blue-500);
-          @apply --emojione-selector-paper-tab-icon-focused;
-        }
-        emojione-badge {
-          opacity: 0;
-        }
-        emojione-badge.show {
-          opacity: 1;
-        }
-        .tab-container {
-          @apply --layout-horizontal;
-          @apply --layout-center;
-          background-color: #fff;
-          border-bottom: 2px solid;
-          border-color: var(--paper-grey-300);
-          padding-left: 4px;
-          @apply --emojione-selector-tab-container;
-        }
-        .dropdown-trigger {
-          --emojione-emoji-container: {
-            display: block;
-            border-radius: 50%;
-            height: 40px;
-            width: 40px;
-            padding: 10px;
-          };
-        }
-        .dropdown-trigger .pickcon {
-          background-color: #ffcf11;
-          border-radius: 50%;
-          height: 20px;
-          width: 20px;
-        }
-        .dropdown-trigger .pickcon.tone1 {
-          background-color: #ffe1bd;
-        }
-        .dropdown-trigger .pickcon.tone2 {
-          background-color: #fed0ac;
-        }
-        .dropdown-trigger .pickcon.tone3 {
-          background-color: #d6a57c;
-        }
-        .dropdown-trigger .pickcon.tone4 {
-          background-color: #b47d56;
-        }
-        .dropdown-trigger .pickcon.tone5 {
-          background-color: #8a6859;
-        }
-        paper-chip-input {
-          @apply --layout-flex;
-          outline: none;
-          margin-right: 12px;
-          --paper-input-container-focus-color: var(--paper-blue-500);
-          @apply --emojione-selector-chip;
-        }
-        paper-icon-button {
-          color: var(--paper-grey-700);
-        }
-        paper-menu-button {
-          padding: 5px;
-        }
-        paper-menu-button paper-icon-button {
-          color: var(--paper-grey-800);
-        }
+          height: 40px;
+          width: 40px;
+          padding: 10px;
+        };
+      }
+      .dropdown-trigger .pickcon {
+        background-color: #ffcf11;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+      }
+      .dropdown-trigger .pickcon.tone1 {
+        background-color: #ffe1bd;
+      }
+      .dropdown-trigger .pickcon.tone2 {
+        background-color: #fed0ac;
+      }
+      .dropdown-trigger .pickcon.tone3 {
+        background-color: #d6a57c;
+      }
+      .dropdown-trigger .pickcon.tone4 {
+        background-color: #b47d56;
+      }
+      .dropdown-trigger .pickcon.tone5 {
+        background-color: #8a6859;
+      }
+      emojione-chip-input {
+        @apply --layout-flex;
+        outline: none;
+        margin-right: 12px;
+        --paper-input-container-focus-color: var(--paper-blue-500);
+        @apply --emojione-selector-chip;
+      }
+      paper-icon-button {
+        color: var(--paper-grey-700);
+      }
+      paper-menu-button {
+        padding: 5px;
+      }
+      paper-menu-button paper-icon-button {
+        color: var(--paper-grey-800);
+      }
 
       </style>
     </custom-style>
@@ -284,7 +208,7 @@ to style the tone picker's dialog.
       </paper-menu-button>
 
       <!-- search bar -->
-      <paper-chip-input id="searchField" label="Search emoji" items="{{search}}" closable></paper-chip-input>
+      <emojione-chip-input id="searchField" label="Search emoji" items="{{search}}" no-label-float closable></emojione-chip-input>
 
       <!-- clear the search -->
       <paper-icon-button id="clearSearch" on-tap="onClearSearchTap" icon="emojione-icons:cancel"></paper-icon-button>
